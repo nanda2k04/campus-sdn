@@ -3,6 +3,25 @@
 An SDN-based campus network that detects link/switch failures and fails traffic
 over to redundant paths, using **Mininet + Open vSwitch + Ryu (OpenFlow 1.3)**.
 
+## Quick start (fresh clone)
+
+```bash
+# 1. system prerequisites (once): Mininet, Open vSwitch, Python 3.9, Node.js
+sudo apt install mininet openvswitch-switch python3.9 python3.9-venv nodejs npm
+
+# 2. project setup (recreates the Ryu venv + dashboard deps; no root needed)
+./setup.sh
+
+# 3. run it — two terminals
+sudo ./run_scale.sh 6 4 24 4 all      # Terminal 1: Ryu + Mininet fabric (root)
+cd dashboard && npm run dev           # Terminal 2: dashboard -> http://localhost:5173
+```
+
+`ryu-venv/` and `node_modules/` are intentionally **not** committed; `setup.sh`
+rebuilds them from `requirements.txt` and `dashboard/package-lock.json`.
+**Ryu requires Python 3.9** (it breaks on 3.10+). Offline proof needs no root:
+`python3 multifail_proof.py`.
+
 ## Architecture (Phase 1, approved)
 
 Hybrid campus topology: a 3-tier Core/Distribution/Access hierarchy hardened with
