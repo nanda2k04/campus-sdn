@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "apple-design": {
+      "source": "gethamster/skills",
+      "sourceType": "github",
+      "skillPath": "skills/.experimental/apple-design/SKILL.md",
+      "computedHash": "276c6ede37fad5739976f0d91e8cdbc69007d99e2644c9bed27535fc5ccb64da"
+    }
+  }
+}

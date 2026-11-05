@@ -1,0 +1,2037 @@
+{
+  "params": {
+    "pods": 6,
+    "access_per_pod": 6,
+    "hosts_per_access": 2,
+    "cores": 4
+  },
+  "summary": {
+    "switches": 52,
+    "core": 4,
+    "dist": 12,
+    "access": 36,
+    "hosts": 72,
+    "links": 174,
+    "inter_switch_links": 102
+  },
+  "switches": {
+    "c1": {
+      "dpid": 101,
+      "tier": "core",
+      "pod": null,
+      "plane": null,
+      "index": 1
+    },
+    "c2": {
+      "dpid": 102,
+      "tier": "core",
+      "pod": null,
+      "plane": null,
+      "index": 2
+    },
+    "c3": {
+      "dpid": 103,
+      "tier": "core",
+      "pod": null,
+      "plane": null,
+      "index": 3
+    },
+    "c4": {
+      "dpid": 104,
+      "tier": "core",
+      "pod": null,
+      "plane": null,
+      "index": 4
+    },
+    "d1a": {
+      "dpid": 211,
+      "tier": "dist",
+      "pod": 1,
+      "plane": "A",
+      "index": null
+    },
+    "d1b": {
+      "dpid": 212,
+      "tier": "dist",
+      "pod": 1,
+      "plane": "B",
+      "index": null
+    },
+    "a1_1": {
+      "dpid": 1101,
+      "tier": "access",
+      "pod": 1,
+      "plane": null,
+      "index": 1
+    },
+    "a1_2": {
+      "dpid": 1102,
+      "tier": "access",
+      "pod": 1,
+      "plane": null,
+      "index": 2
+    },
+    "a1_3": {
+      "dpid": 1103,
+      "tier": "access",
+      "pod": 1,
+      "plane": null,
+      "index": 3
+    },
+    "a1_4": {
+      "dpid": 1104,
+      "tier": "access",
+      "pod": 1,
+      "plane": null,
+      "index": 4
+    },
+    "a1_5": {
+      "dpid": 1105,
+      "tier": "access",
+      "pod": 1,
+      "plane": null,
+      "index": 5
+    },
+    "a1_6": {
+      "dpid": 1106,
+      "tier": "access",
+      "pod": 1,
+      "plane": null,
+      "index": 6
+    },
+    "d2a": {
+      "dpid": 221,
+      "tier": "dist",
+      "pod": 2,
+      "plane": "A",
+      "index": null
+    },
+    "d2b": {
+      "dpid": 222,
+      "tier": "dist",
+      "pod": 2,
+      "plane": "B",
+      "index": null
+    },
+    "a2_1": {
+      "dpid": 1201,
+      "tier": "access",
+      "pod": 2,
+      "plane": null,
+      "index": 1
+    },
+    "a2_2": {
+      "dpid": 1202,
+      "tier": "access",
+      "pod": 2,
+      "plane": null,
+      "index": 2
+    },
+    "a2_3": {
+      "dpid": 1203,
+      "tier": "access",
+      "pod": 2,
+      "plane": null,
+      "index": 3
+    },
+    "a2_4": {
+      "dpid": 1204,
+      "tier": "access",
+      "pod": 2,
+      "plane": null,
+      "index": 4
+    },
+    "a2_5": {
+      "dpid": 1205,
+      "tier": "access",
+      "pod": 2,
+      "plane": null,
+      "index": 5
+    },
+    "a2_6": {
+      "dpid": 1206,
+      "tier": "access",
+      "pod": 2,
+      "plane": null,
+      "index": 6
+    },
+    "d3a": {
+      "dpid": 231,
+      "tier": "dist",
+      "pod": 3,
+      "plane": "A",
+      "index": null
+    },
+    "d3b": {
+      "dpid": 232,
+      "tier": "dist",
+      "pod": 3,
+      "plane": "B",
+      "index": null
+    },
+    "a3_1": {
+      "dpid": 1301,
+      "tier": "access",
+      "pod": 3,
+      "plane": null,
+      "index": 1
+    },
+    "a3_2": {
+      "dpid": 1302,
+      "tier": "access",
+      "pod": 3,
+      "plane": null,
+      "index": 2
+    },
+    "a3_3": {
+      "dpid": 1303,
+      "tier": "access",
+      "pod": 3,
+      "plane": null,
+      "index": 3
+    },
+    "a3_4": {
+      "dpid": 1304,
+      "tier": "access",
+      "pod": 3,
+      "plane": null,
+      "index": 4
+    },
+    "a3_5": {
+      "dpid": 1305,
+      "tier": "access",
+      "pod": 3,
+      "plane": null,
+      "index": 5
+    },
+    "a3_6": {
+      "dpid": 1306,
+      "tier": "access",
+      "pod": 3,
+      "plane": null,
+      "index": 6
+    },
+    "d4a": {
+      "dpid": 241,
+      "tier": "dist",
+      "pod": 4,
+      "plane": "A",
+      "index": null
+    },
+    "d4b": {
+      "dpid": 242,
+      "tier": "dist",
+      "pod": 4,
+      "plane": "B",
+      "index": null
+    },
+    "a4_1": {
+      "dpid": 1401,
+      "tier": "access",
+      "pod": 4,
+      "plane": null,
+      "index": 1
+    },
+    "a4_2": {
+      "dpid": 1402,
+      "tier": "access",
+      "pod": 4,
+      "plane": null,
+      "index": 2
+    },
+    "a4_3": {
+      "dpid": 1403,
+      "tier": "access",
+      "pod": 4,
+      "plane": null,
+      "index": 3
+    },
+    "a4_4": {
+      "dpid": 1404,
+      "tier": "access",
+      "pod": 4,
+      "plane": null,
+      "index": 4
+    },
+    "a4_5": {
+      "dpid": 1405,
+      "tier": "access",
+      "pod": 4,
+      "plane": null,
+      "index": 5
+    },
+    "a4_6": {
+      "dpid": 1406,
+      "tier": "access",
+      "pod": 4,
+      "plane": null,
+      "index": 6
+    },
+    "d5a": {
+      "dpid": 251,
+      "tier": "dist",
+      "pod": 5,
+      "plane": "A",
+      "index": null
+    },
+    "d5b": {
+      "dpid": 252,
+      "tier": "dist",
+      "pod": 5,
+      "plane": "B",
+      "index": null
+    },
+    "a5_1": {
+      "dpid": 1501,
+      "tier": "access",
+      "pod": 5,
+      "plane": null,
+      "index": 1
+    },
+    "a5_2": {
+      "dpid": 1502,
+      "tier": "access",
+      "pod": 5,
+      "plane": null,
+      "index": 2
+    },
+    "a5_3": {
+      "dpid": 1503,
+      "tier": "access",
+      "pod": 5,
+      "plane": null,
+      "index": 3
+    },
+    "a5_4": {
+      "dpid": 1504,
+      "tier": "access",
+      "pod": 5,
+      "plane": null,
+      "index": 4
+    },
+    "a5_5": {
+      "dpid": 1505,
+      "tier": "access",
+      "pod": 5,
+      "plane": null,
+      "index": 5
+    },
+    "a5_6": {
+      "dpid": 1506,
+      "tier": "access",
+      "pod": 5,
+      "plane": null,
+      "index": 6
+    },
+    "d6a": {
+      "dpid": 261,
+      "tier": "dist",
+      "pod": 6,
+      "plane": "A",
+      "index": null
+    },
+    "d6b": {
+      "dpid": 262,
+      "tier": "dist",
+      "pod": 6,
+      "plane": "B",
+      "index": null
+    },
+    "a6_1": {
+      "dpid": 1601,
+      "tier": "access",
+      "pod": 6,
+      "plane": null,
+      "index": 1
+    },
+    "a6_2": {
+      "dpid": 1602,
+      "tier": "access",
+      "pod": 6,
+      "plane": null,
+      "index": 2
+    },
+    "a6_3": {
+      "dpid": 1603,
+      "tier": "access",
+      "pod": 6,
+      "plane": null,
+      "index": 3
+    },
+    "a6_4": {
+      "dpid": 1604,
+      "tier": "access",
+      "pod": 6,
+      "plane": null,
+      "index": 4
+    },
+    "a6_5": {
+      "dpid": 1605,
+      "tier": "access",
+      "pod": 6,
+      "plane": null,
+      "index": 5
+    },
+    "a6_6": {
+      "dpid": 1606,
+      "tier": "access",
+      "pod": 6,
+      "plane": null,
+      "index": 6
+    }
+  },
+  "hosts": {
+    "h1_1_1": {
+      "ip": "10.1.1.1",
+      "mac": "00:00:00:01:01:01",
+      "access": "a1_1",
+      "access_port": 10
+    },
+    "h1_1_2": {
+      "ip": "10.1.1.2",
+      "mac": "00:00:00:01:01:02",
+      "access": "a1_1",
+      "access_port": 11
+    },
+    "h1_2_1": {
+      "ip": "10.1.2.1",
+      "mac": "00:00:00:01:02:01",
+      "access": "a1_2",
+      "access_port": 10
+    },
+    "h1_2_2": {
+      "ip": "10.1.2.2",
+      "mac": "00:00:00:01:02:02",
+      "access": "a1_2",
+      "access_port": 11
+    },
+    "h1_3_1": {
+      "ip": "10.1.3.1",
+      "mac": "00:00:00:01:03:01",
+      "access": "a1_3",
+      "access_port": 10
+    },
+    "h1_3_2": {
+      "ip": "10.1.3.2",
+      "mac": "00:00:00:01:03:02",
+      "access": "a1_3",
+      "access_port": 11
+    },
+    "h1_4_1": {
+      "ip": "10.1.4.1",
+      "mac": "00:00:00:01:04:01",
+      "access": "a1_4",
+      "access_port": 10
+    },
+    "h1_4_2": {
+      "ip": "10.1.4.2",
+      "mac": "00:00:00:01:04:02",
+      "access": "a1_4",
+      "access_port": 11
+    },
+    "h1_5_1": {
+      "ip": "10.1.5.1",
+      "mac": "00:00:00:01:05:01",
+      "access": "a1_5",
+      "access_port": 10
+    },
+    "h1_5_2": {
+      "ip": "10.1.5.2",
+      "mac": "00:00:00:01:05:02",
+      "access": "a1_5",
+      "access_port": 11
+    },
+    "h1_6_1": {
+      "ip": "10.1.6.1",
+      "mac": "00:00:00:01:06:01",
+      "access": "a1_6",
+      "access_port": 10
+    },
+    "h1_6_2": {
+      "ip": "10.1.6.2",
+      "mac": "00:00:00:01:06:02",
+      "access": "a1_6",
+      "access_port": 11
+    },
+    "h2_1_1": {
+      "ip": "10.2.1.1",
+      "mac": "00:00:00:02:01:01",
+      "access": "a2_1",
+      "access_port": 10
+    },
+    "h2_1_2": {
+      "ip": "10.2.1.2",
+      "mac": "00:00:00:02:01:02",
+      "access": "a2_1",
+      "access_port": 11
+    },
+    "h2_2_1": {
+      "ip": "10.2.2.1",
+      "mac": "00:00:00:02:02:01",
+      "access": "a2_2",
+      "access_port": 10
+    },
+    "h2_2_2": {
+      "ip": "10.2.2.2",
+      "mac": "00:00:00:02:02:02",
+      "access": "a2_2",
+      "access_port": 11
+    },
+    "h2_3_1": {
+      "ip": "10.2.3.1",
+      "mac": "00:00:00:02:03:01",
+      "access": "a2_3",
+      "access_port": 10
+    },
+    "h2_3_2": {
+      "ip": "10.2.3.2",
+      "mac": "00:00:00:02:03:02",
+      "access": "a2_3",
+      "access_port": 11
+    },
+    "h2_4_1": {
+      "ip": "10.2.4.1",
+      "mac": "00:00:00:02:04:01",
+      "access": "a2_4",
+      "access_port": 10
+    },
+    "h2_4_2": {
+      "ip": "10.2.4.2",
+      "mac": "00:00:00:02:04:02",
+      "access": "a2_4",
+      "access_port": 11
+    },
+    "h2_5_1": {
+      "ip": "10.2.5.1",
+      "mac": "00:00:00:02:05:01",
+      "access": "a2_5",
+      "access_port": 10
+    },
+    "h2_5_2": {
+      "ip": "10.2.5.2",
+      "mac": "00:00:00:02:05:02",
+      "access": "a2_5",
+      "access_port": 11
+    },
+    "h2_6_1": {
+      "ip": "10.2.6.1",
+      "mac": "00:00:00:02:06:01",
+      "access": "a2_6",
+      "access_port": 10
+    },
+    "h2_6_2": {
+      "ip": "10.2.6.2",
+      "mac": "00:00:00:02:06:02",
+      "access": "a2_6",
+      "access_port": 11
+    },
+    "h3_1_1": {
+      "ip": "10.3.1.1",
+      "mac": "00:00:00:03:01:01",
+      "access": "a3_1",
+      "access_port": 10
+    },
+    "h3_1_2": {
+      "ip": "10.3.1.2",
+      "mac": "00:00:00:03:01:02",
+      "access": "a3_1",
+      "access_port": 11
+    },
+    "h3_2_1": {
+      "ip": "10.3.2.1",
+      "mac": "00:00:00:03:02:01",
+      "access": "a3_2",
+      "access_port": 10
+    },
+    "h3_2_2": {
+      "ip": "10.3.2.2",
+      "mac": "00:00:00:03:02:02",
+      "access": "a3_2",
+      "access_port": 11
+    },
+    "h3_3_1": {
+      "ip": "10.3.3.1",
+      "mac": "00:00:00:03:03:01",
+      "access": "a3_3",
+      "access_port": 10
+    },
+    "h3_3_2": {
+      "ip": "10.3.3.2",
+      "mac": "00:00:00:03:03:02",
+      "access": "a3_3",
+      "access_port": 11
+    },
+    "h3_4_1": {
+      "ip": "10.3.4.1",
+      "mac": "00:00:00:03:04:01",
+      "access": "a3_4",
+      "access_port": 10
+    },
+    "h3_4_2": {
+      "ip": "10.3.4.2",
+      "mac": "00:00:00:03:04:02",
+      "access": "a3_4",
+      "access_port": 11
+    },
+    "h3_5_1": {
+      "ip": "10.3.5.1",
+      "mac": "00:00:00:03:05:01",
+      "access": "a3_5",
+      "access_port": 10
+    },
+    "h3_5_2": {
+      "ip": "10.3.5.2",
+      "mac": "00:00:00:03:05:02",
+      "access": "a3_5",
+      "access_port": 11
+    },
+    "h3_6_1": {
+      "ip": "10.3.6.1",
+      "mac": "00:00:00:03:06:01",
+      "access": "a3_6",
+      "access_port": 10
+    },
+    "h3_6_2": {
+      "ip": "10.3.6.2",
+      "mac": "00:00:00:03:06:02",
+      "access": "a3_6",
+      "access_port": 11
+    },
+    "h4_1_1": {
+      "ip": "10.4.1.1",
+      "mac": "00:00:00:04:01:01",
+      "access": "a4_1",
+      "access_port": 10
+    },
+    "h4_1_2": {
+      "ip": "10.4.1.2",
+      "mac": "00:00:00:04:01:02",
+      "access": "a4_1",
+      "access_port": 11
+    },
+    "h4_2_1": {
+      "ip": "10.4.2.1",
+      "mac": "00:00:00:04:02:01",
+      "access": "a4_2",
+      "access_port": 10
+    },
+    "h4_2_2": {
+      "ip": "10.4.2.2",
+      "mac": "00:00:00:04:02:02",
+      "access": "a4_2",
+      "access_port": 11
+    },
+    "h4_3_1": {
+      "ip": "10.4.3.1",
+      "mac": "00:00:00:04:03:01",
+      "access": "a4_3",
+      "access_port": 10
+    },
+    "h4_3_2": {
+      "ip": "10.4.3.2",
+      "mac": "00:00:00:04:03:02",
+      "access": "a4_3",
+      "access_port": 11
+    },
+    "h4_4_1": {
+      "ip": "10.4.4.1",
+      "mac": "00:00:00:04:04:01",
+      "access": "a4_4",
+      "access_port": 10
+    },
+    "h4_4_2": {
+      "ip": "10.4.4.2",
+      "mac": "00:00:00:04:04:02",
+      "access": "a4_4",
+      "access_port": 11
+    },
+    "h4_5_1": {
+      "ip": "10.4.5.1",
+      "mac": "00:00:00:04:05:01",
+      "access": "a4_5",
+      "access_port": 10
+    },
+    "h4_5_2": {
+      "ip": "10.4.5.2",
+      "mac": "00:00:00:04:05:02",
+      "access": "a4_5",
+      "access_port": 11
+    },
+    "h4_6_1": {
+      "ip": "10.4.6.1",
+      "mac": "00:00:00:04:06:01",
+      "access": "a4_6",
+      "access_port": 10
+    },
+    "h4_6_2": {
+      "ip": "10.4.6.2",
+      "mac": "00:00:00:04:06:02",
+      "access": "a4_6",
+      "access_port": 11
+    },
+    "h5_1_1": {
+      "ip": "10.5.1.1",
+      "mac": "00:00:00:05:01:01",
+      "access": "a5_1",
+      "access_port": 10
+    },
+    "h5_1_2": {
+      "ip": "10.5.1.2",
+      "mac": "00:00:00:05:01:02",
+      "access": "a5_1",
+      "access_port": 11
+    },
+    "h5_2_1": {
+      "ip": "10.5.2.1",
+      "mac": "00:00:00:05:02:01",
+      "access": "a5_2",
+      "access_port": 10
+    },
+    "h5_2_2": {
+      "ip": "10.5.2.2",
+      "mac": "00:00:00:05:02:02",
+      "access": "a5_2",
+      "access_port": 11
+    },
+    "h5_3_1": {
+      "ip": "10.5.3.1",
+      "mac": "00:00:00:05:03:01",
+      "access": "a5_3",
+      "access_port": 10
+    },
+    "h5_3_2": {
+      "ip": "10.5.3.2",
+      "mac": "00:00:00:05:03:02",
+      "access": "a5_3",
+      "access_port": 11
+    },
+    "h5_4_1": {
+      "ip": "10.5.4.1",
+      "mac": "00:00:00:05:04:01",
+      "access": "a5_4",
+      "access_port": 10
+    },
+    "h5_4_2": {
+      "ip": "10.5.4.2",
+      "mac": "00:00:00:05:04:02",
+      "access": "a5_4",
+      "access_port": 11
+    },
+    "h5_5_1": {
+      "ip": "10.5.5.1",
+      "mac": "00:00:00:05:05:01",
+      "access": "a5_5",
+      "access_port": 10
+    },
+    "h5_5_2": {
+      "ip": "10.5.5.2",
+      "mac": "00:00:00:05:05:02",
+      "access": "a5_5",
+      "access_port": 11
+    },
+    "h5_6_1": {
+      "ip": "10.5.6.1",
+      "mac": "00:00:00:05:06:01",
+      "access": "a5_6",
+      "access_port": 10
+    },
+    "h5_6_2": {
+      "ip": "10.5.6.2",
+      "mac": "00:00:00:05:06:02",
+      "access": "a5_6",
+      "access_port": 11
+    },
+    "h6_1_1": {
+      "ip": "10.6.1.1",
+      "mac": "00:00:00:06:01:01",
+      "access": "a6_1",
+      "access_port": 10
+    },
+    "h6_1_2": {
+      "ip": "10.6.1.2",
+      "mac": "00:00:00:06:01:02",
+      "access": "a6_1",
+      "access_port": 11
+    },
+    "h6_2_1": {
+      "ip": "10.6.2.1",
+      "mac": "00:00:00:06:02:01",
+      "access": "a6_2",
+      "access_port": 10
+    },
+    "h6_2_2": {
+      "ip": "10.6.2.2",
+      "mac": "00:00:00:06:02:02",
+      "access": "a6_2",
+      "access_port": 11
+    },
+    "h6_3_1": {
+      "ip": "10.6.3.1",
+      "mac": "00:00:00:06:03:01",
+      "access": "a6_3",
+      "access_port": 10
+    },
+    "h6_3_2": {
+      "ip": "10.6.3.2",
+      "mac": "00:00:00:06:03:02",
+      "access": "a6_3",
+      "access_port": 11
+    },
+    "h6_4_1": {
+      "ip": "10.6.4.1",
+      "mac": "00:00:00:06:04:01",
+      "access": "a6_4",
+      "access_port": 10
+    },
+    "h6_4_2": {
+      "ip": "10.6.4.2",
+      "mac": "00:00:00:06:04:02",
+      "access": "a6_4",
+      "access_port": 11
+    },
+    "h6_5_1": {
+      "ip": "10.6.5.1",
+      "mac": "00:00:00:06:05:01",
+      "access": "a6_5",
+      "access_port": 10
+    },
+    "h6_5_2": {
+      "ip": "10.6.5.2",
+      "mac": "00:00:00:06:05:02",
+      "access": "a6_5",
+      "access_port": 11
+    },
+    "h6_6_1": {
+      "ip": "10.6.6.1",
+      "mac": "00:00:00:06:06:01",
+      "access": "a6_6",
+      "access_port": 10
+    },
+    "h6_6_2": {
+      "ip": "10.6.6.2",
+      "mac": "00:00:00:06:06:02",
+      "access": "a6_6",
+      "access_port": 11
+    }
+  },
+  "links": [
+    {
+      "a": "c1",
+      "a_port": 1,
+      "b": "c2",
+      "b_port": 1,
+      "kind": "core-mesh"
+    },
+    {
+      "a": "c1",
+      "a_port": 2,
+      "b": "c3",
+      "b_port": 1,
+      "kind": "core-mesh"
+    },
+    {
+      "a": "c1",
+      "a_port": 3,
+      "b": "c4",
+      "b_port": 1,
+      "kind": "core-mesh"
+    },
+    {
+      "a": "c2",
+      "a_port": 2,
+      "b": "c3",
+      "b_port": 2,
+      "kind": "core-mesh"
+    },
+    {
+      "a": "c2",
+      "a_port": 3,
+      "b": "c4",
+      "b_port": 2,
+      "kind": "core-mesh"
+    },
+    {
+      "a": "c3",
+      "a_port": 3,
+      "b": "c4",
+      "b_port": 3,
+      "kind": "core-mesh"
+    },
+    {
+      "a": "d1a",
+      "a_port": 1,
+      "b": "c1",
+      "b_port": 10,
+      "kind": "dist-core"
+    },
+    {
+      "a": "d1a",
+      "a_port": 2,
+      "b": "c2",
+      "b_port": 10,
+      "kind": "dist-core"
+    },
+    {
+      "a": "d1b",
+      "a_port": 1,
+      "b": "c3",
+      "b_port": 10,
+      "kind": "dist-core"
+    },
+    {
+      "a": "d1b",
+      "a_port": 2,
+      "b": "c4",
+      "b_port": 10,
+      "kind": "dist-core"
+    },
+    {
+      "a": "a1_1",
+      "a_port": 1,
+      "b": "d1a",
+      "b_port": 10,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a1_1",
+      "a_port": 2,
+      "b": "d1b",
+      "b_port": 10,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h1_1_1",
+      "a_port": 0,
+      "b": "a1_1",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h1_1_2",
+      "a_port": 0,
+      "b": "a1_1",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a1_2",
+      "a_port": 1,
+      "b": "d1a",
+      "b_port": 11,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a1_2",
+      "a_port": 2,
+      "b": "d1b",
+      "b_port": 11,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h1_2_1",
+      "a_port": 0,
+      "b": "a1_2",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h1_2_2",
+      "a_port": 0,
+      "b": "a1_2",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a1_3",
+      "a_port": 1,
+      "b": "d1a",
+      "b_port": 12,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a1_3",
+      "a_port": 2,
+      "b": "d1b",
+      "b_port": 12,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h1_3_1",
+      "a_port": 0,
+      "b": "a1_3",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h1_3_2",
+      "a_port": 0,
+      "b": "a1_3",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a1_4",
+      "a_port": 1,
+      "b": "d1a",
+      "b_port": 13,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a1_4",
+      "a_port": 2,
+      "b": "d1b",
+      "b_port": 13,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h1_4_1",
+      "a_port": 0,
+      "b": "a1_4",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h1_4_2",
+      "a_port": 0,
+      "b": "a1_4",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a1_5",
+      "a_port": 1,
+      "b": "d1a",
+      "b_port": 14,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a1_5",
+      "a_port": 2,
+      "b": "d1b",
+      "b_port": 14,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h1_5_1",
+      "a_port": 0,
+      "b": "a1_5",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h1_5_2",
+      "a_port": 0,
+      "b": "a1_5",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a1_6",
+      "a_port": 1,
+      "b": "d1a",
+      "b_port": 15,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a1_6",
+      "a_port": 2,
+      "b": "d1b",
+      "b_port": 15,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h1_6_1",
+      "a_port": 0,
+      "b": "a1_6",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h1_6_2",
+      "a_port": 0,
+      "b": "a1_6",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "d2a",
+      "a_port": 1,
+      "b": "c1",
+      "b_port": 11,
+      "kind": "dist-core"
+    },
+    {
+      "a": "d2a",
+      "a_port": 2,
+      "b": "c2",
+      "b_port": 11,
+      "kind": "dist-core"
+    },
+    {
+      "a": "d2b",
+      "a_port": 1,
+      "b": "c3",
+      "b_port": 11,
+      "kind": "dist-core"
+    },
+    {
+      "a": "d2b",
+      "a_port": 2,
+      "b": "c4",
+      "b_port": 11,
+      "kind": "dist-core"
+    },
+    {
+      "a": "a2_1",
+      "a_port": 1,
+      "b": "d2a",
+      "b_port": 10,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a2_1",
+      "a_port": 2,
+      "b": "d2b",
+      "b_port": 10,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h2_1_1",
+      "a_port": 0,
+      "b": "a2_1",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h2_1_2",
+      "a_port": 0,
+      "b": "a2_1",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a2_2",
+      "a_port": 1,
+      "b": "d2a",
+      "b_port": 11,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a2_2",
+      "a_port": 2,
+      "b": "d2b",
+      "b_port": 11,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h2_2_1",
+      "a_port": 0,
+      "b": "a2_2",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h2_2_2",
+      "a_port": 0,
+      "b": "a2_2",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a2_3",
+      "a_port": 1,
+      "b": "d2a",
+      "b_port": 12,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a2_3",
+      "a_port": 2,
+      "b": "d2b",
+      "b_port": 12,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h2_3_1",
+      "a_port": 0,
+      "b": "a2_3",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h2_3_2",
+      "a_port": 0,
+      "b": "a2_3",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a2_4",
+      "a_port": 1,
+      "b": "d2a",
+      "b_port": 13,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a2_4",
+      "a_port": 2,
+      "b": "d2b",
+      "b_port": 13,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h2_4_1",
+      "a_port": 0,
+      "b": "a2_4",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h2_4_2",
+      "a_port": 0,
+      "b": "a2_4",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a2_5",
+      "a_port": 1,
+      "b": "d2a",
+      "b_port": 14,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a2_5",
+      "a_port": 2,
+      "b": "d2b",
+      "b_port": 14,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h2_5_1",
+      "a_port": 0,
+      "b": "a2_5",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h2_5_2",
+      "a_port": 0,
+      "b": "a2_5",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a2_6",
+      "a_port": 1,
+      "b": "d2a",
+      "b_port": 15,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a2_6",
+      "a_port": 2,
+      "b": "d2b",
+      "b_port": 15,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h2_6_1",
+      "a_port": 0,
+      "b": "a2_6",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h2_6_2",
+      "a_port": 0,
+      "b": "a2_6",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "d3a",
+      "a_port": 1,
+      "b": "c1",
+      "b_port": 12,
+      "kind": "dist-core"
+    },
+    {
+      "a": "d3a",
+      "a_port": 2,
+      "b": "c2",
+      "b_port": 12,
+      "kind": "dist-core"
+    },
+    {
+      "a": "d3b",
+      "a_port": 1,
+      "b": "c3",
+      "b_port": 12,
+      "kind": "dist-core"
+    },
+    {
+      "a": "d3b",
+      "a_port": 2,
+      "b": "c4",
+      "b_port": 12,
+      "kind": "dist-core"
+    },
+    {
+      "a": "a3_1",
+      "a_port": 1,
+      "b": "d3a",
+      "b_port": 10,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a3_1",
+      "a_port": 2,
+      "b": "d3b",
+      "b_port": 10,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h3_1_1",
+      "a_port": 0,
+      "b": "a3_1",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h3_1_2",
+      "a_port": 0,
+      "b": "a3_1",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a3_2",
+      "a_port": 1,
+      "b": "d3a",
+      "b_port": 11,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a3_2",
+      "a_port": 2,
+      "b": "d3b",
+      "b_port": 11,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h3_2_1",
+      "a_port": 0,
+      "b": "a3_2",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h3_2_2",
+      "a_port": 0,
+      "b": "a3_2",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a3_3",
+      "a_port": 1,
+      "b": "d3a",
+      "b_port": 12,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a3_3",
+      "a_port": 2,
+      "b": "d3b",
+      "b_port": 12,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h3_3_1",
+      "a_port": 0,
+      "b": "a3_3",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h3_3_2",
+      "a_port": 0,
+      "b": "a3_3",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a3_4",
+      "a_port": 1,
+      "b": "d3a",
+      "b_port": 13,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a3_4",
+      "a_port": 2,
+      "b": "d3b",
+      "b_port": 13,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h3_4_1",
+      "a_port": 0,
+      "b": "a3_4",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h3_4_2",
+      "a_port": 0,
+      "b": "a3_4",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a3_5",
+      "a_port": 1,
+      "b": "d3a",
+      "b_port": 14,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a3_5",
+      "a_port": 2,
+      "b": "d3b",
+      "b_port": 14,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h3_5_1",
+      "a_port": 0,
+      "b": "a3_5",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h3_5_2",
+      "a_port": 0,
+      "b": "a3_5",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a3_6",
+      "a_port": 1,
+      "b": "d3a",
+      "b_port": 15,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a3_6",
+      "a_port": 2,
+      "b": "d3b",
+      "b_port": 15,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h3_6_1",
+      "a_port": 0,
+      "b": "a3_6",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h3_6_2",
+      "a_port": 0,
+      "b": "a3_6",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "d4a",
+      "a_port": 1,
+      "b": "c1",
+      "b_port": 13,
+      "kind": "dist-core"
+    },
+    {
+      "a": "d4a",
+      "a_port": 2,
+      "b": "c2",
+      "b_port": 13,
+      "kind": "dist-core"
+    },
+    {
+      "a": "d4b",
+      "a_port": 1,
+      "b": "c3",
+      "b_port": 13,
+      "kind": "dist-core"
+    },
+    {
+      "a": "d4b",
+      "a_port": 2,
+      "b": "c4",
+      "b_port": 13,
+      "kind": "dist-core"
+    },
+    {
+      "a": "a4_1",
+      "a_port": 1,
+      "b": "d4a",
+      "b_port": 10,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a4_1",
+      "a_port": 2,
+      "b": "d4b",
+      "b_port": 10,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h4_1_1",
+      "a_port": 0,
+      "b": "a4_1",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h4_1_2",
+      "a_port": 0,
+      "b": "a4_1",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a4_2",
+      "a_port": 1,
+      "b": "d4a",
+      "b_port": 11,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a4_2",
+      "a_port": 2,
+      "b": "d4b",
+      "b_port": 11,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h4_2_1",
+      "a_port": 0,
+      "b": "a4_2",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h4_2_2",
+      "a_port": 0,
+      "b": "a4_2",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a4_3",
+      "a_port": 1,
+      "b": "d4a",
+      "b_port": 12,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a4_3",
+      "a_port": 2,
+      "b": "d4b",
+      "b_port": 12,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h4_3_1",
+      "a_port": 0,
+      "b": "a4_3",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h4_3_2",
+      "a_port": 0,
+      "b": "a4_3",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a4_4",
+      "a_port": 1,
+      "b": "d4a",
+      "b_port": 13,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a4_4",
+      "a_port": 2,
+      "b": "d4b",
+      "b_port": 13,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h4_4_1",
+      "a_port": 0,
+      "b": "a4_4",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h4_4_2",
+      "a_port": 0,
+      "b": "a4_4",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a4_5",
+      "a_port": 1,
+      "b": "d4a",
+      "b_port": 14,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a4_5",
+      "a_port": 2,
+      "b": "d4b",
+      "b_port": 14,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h4_5_1",
+      "a_port": 0,
+      "b": "a4_5",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h4_5_2",
+      "a_port": 0,
+      "b": "a4_5",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a4_6",
+      "a_port": 1,
+      "b": "d4a",
+      "b_port": 15,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a4_6",
+      "a_port": 2,
+      "b": "d4b",
+      "b_port": 15,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h4_6_1",
+      "a_port": 0,
+      "b": "a4_6",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h4_6_2",
+      "a_port": 0,
+      "b": "a4_6",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "d5a",
+      "a_port": 1,
+      "b": "c1",
+      "b_port": 14,
+      "kind": "dist-core"
+    },
+    {
+      "a": "d5a",
+      "a_port": 2,
+      "b": "c2",
+      "b_port": 14,
+      "kind": "dist-core"
+    },
+    {
+      "a": "d5b",
+      "a_port": 1,
+      "b": "c3",
+      "b_port": 14,
+      "kind": "dist-core"
+    },
+    {
+      "a": "d5b",
+      "a_port": 2,
+      "b": "c4",
+      "b_port": 14,
+      "kind": "dist-core"
+    },
+    {
+      "a": "a5_1",
+      "a_port": 1,
+      "b": "d5a",
+      "b_port": 10,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a5_1",
+      "a_port": 2,
+      "b": "d5b",
+      "b_port": 10,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h5_1_1",
+      "a_port": 0,
+      "b": "a5_1",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h5_1_2",
+      "a_port": 0,
+      "b": "a5_1",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a5_2",
+      "a_port": 1,
+      "b": "d5a",
+      "b_port": 11,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a5_2",
+      "a_port": 2,
+      "b": "d5b",
+      "b_port": 11,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h5_2_1",
+      "a_port": 0,
+      "b": "a5_2",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h5_2_2",
+      "a_port": 0,
+      "b": "a5_2",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a5_3",
+      "a_port": 1,
+      "b": "d5a",
+      "b_port": 12,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a5_3",
+      "a_port": 2,
+      "b": "d5b",
+      "b_port": 12,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h5_3_1",
+      "a_port": 0,
+      "b": "a5_3",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h5_3_2",
+      "a_port": 0,
+      "b": "a5_3",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a5_4",
+      "a_port": 1,
+      "b": "d5a",
+      "b_port": 13,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a5_4",
+      "a_port": 2,
+      "b": "d5b",
+      "b_port": 13,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h5_4_1",
+      "a_port": 0,
+      "b": "a5_4",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h5_4_2",
+      "a_port": 0,
+      "b": "a5_4",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a5_5",
+      "a_port": 1,
+      "b": "d5a",
+      "b_port": 14,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a5_5",
+      "a_port": 2,
+      "b": "d5b",
+      "b_port": 14,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h5_5_1",
+      "a_port": 0,
+      "b": "a5_5",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h5_5_2",
+      "a_port": 0,
+      "b": "a5_5",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a5_6",
+      "a_port": 1,
+      "b": "d5a",
+      "b_port": 15,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a5_6",
+      "a_port": 2,
+      "b": "d5b",
+      "b_port": 15,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h5_6_1",
+      "a_port": 0,
+      "b": "a5_6",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h5_6_2",
+      "a_port": 0,
+      "b": "a5_6",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "d6a",
+      "a_port": 1,
+      "b": "c1",
+      "b_port": 15,
+      "kind": "dist-core"
+    },
+    {
+      "a": "d6a",
+      "a_port": 2,
+      "b": "c2",
+      "b_port": 15,
+      "kind": "dist-core"
+    },
+    {
+      "a": "d6b",
+      "a_port": 1,
+      "b": "c3",
+      "b_port": 15,
+      "kind": "dist-core"
+    },
+    {
+      "a": "d6b",
+      "a_port": 2,
+      "b": "c4",
+      "b_port": 15,
+      "kind": "dist-core"
+    },
+    {
+      "a": "a6_1",
+      "a_port": 1,
+      "b": "d6a",
+      "b_port": 10,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a6_1",
+      "a_port": 2,
+      "b": "d6b",
+      "b_port": 10,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h6_1_1",
+      "a_port": 0,
+      "b": "a6_1",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h6_1_2",
+      "a_port": 0,
+      "b": "a6_1",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a6_2",
+      "a_port": 1,
+      "b": "d6a",
+      "b_port": 11,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a6_2",
+      "a_port": 2,
+      "b": "d6b",
+      "b_port": 11,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h6_2_1",
+      "a_port": 0,
+      "b": "a6_2",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h6_2_2",
+      "a_port": 0,
+      "b": "a6_2",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a6_3",
+      "a_port": 1,
+      "b": "d6a",
+      "b_port": 12,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a6_3",
+      "a_port": 2,
+      "b": "d6b",
+      "b_port": 12,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h6_3_1",
+      "a_port": 0,
+      "b": "a6_3",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h6_3_2",
+      "a_port": 0,
+      "b": "a6_3",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a6_4",
+      "a_port": 1,
+      "b": "d6a",
+      "b_port": 13,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a6_4",
+      "a_port": 2,
+      "b": "d6b",
+      "b_port": 13,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h6_4_1",
+      "a_port": 0,
+      "b": "a6_4",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h6_4_2",
+      "a_port": 0,
+      "b": "a6_4",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a6_5",
+      "a_port": 1,
+      "b": "d6a",
+      "b_port": 14,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a6_5",
+      "a_port": 2,
+      "b": "d6b",
+      "b_port": 14,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h6_5_1",
+      "a_port": 0,
+      "b": "a6_5",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h6_5_2",
+      "a_port": 0,
+      "b": "a6_5",
+      "b_port": 11,
+      "kind": "host-access"
+    },
+    {
+      "a": "a6_6",
+      "a_port": 1,
+      "b": "d6a",
+      "b_port": 15,
+      "kind": "access-dist"
+    },
+    {
+      "a": "a6_6",
+      "a_port": 2,
+      "b": "d6b",
+      "b_port": 15,
+      "kind": "access-dist"
+    },
+    {
+      "a": "h6_6_1",
+      "a_port": 0,
+      "b": "a6_6",
+      "b_port": 10,
+      "kind": "host-access"
+    },
+    {
+      "a": "h6_6_2",
+      "a_port": 0,
+      "b": "a6_6",
+      "b_port": 11,
+      "kind": "host-access"
+    }
+  ]
+}

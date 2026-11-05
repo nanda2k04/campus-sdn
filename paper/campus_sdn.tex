@@ -1,0 +1,561 @@
+%==============================================================================
+% Resilient Campus SDN — research paper draft (IEEE conference format)
+% Compiles on Overleaf as-is (single file, no external .bib, no figures).
+% All numbers are measured from the project's own result files; nothing here is
+% fabricated. Tables are plain LaTeX (no images). Replace author/affiliation and
+% verify the citation details against the originals before submission.
+%==============================================================================
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+
+\begin{document}
+
+\title{Resilient Campus SDN: Unifying Fast Failover,\\ Load Balancing, and QoS through\\ First-Hop Plane Selection on OpenFlow~1.3}
+
+% VERIFY: replace the bracketed placeholders with your real department,
+% institution and location before submission.
+\author{\IEEEauthorblockN{Nandakrishna J}
+\IEEEauthorblockA{\textit{Department of [Department]} \\
+\textit{[Institution]}\\
+[City, Country] \\
+nandakrishna.j04@gmail.com}}
+
+\maketitle
+
+\begin{abstract}
+Campus networks still recover from failures reactively, leave roughly half of
+their redundant capacity idle under spanning-tree, and concentrate control in a
+single device. We present a Software-Defined Networking (SDN) campus fabric
+built on Mininet, Open vSwitch, and the Ryu controller (OpenFlow~1.3) that
+treats failover, load balancing, and Quality-of-Service (QoS) not as three
+separate subsystems but as a single decision taken at the first hop: which of
+two physically independent planes a flow should use. The two planes are
+node-disjoint by construction, so a backup path is provably independent of the
+primary. Forwarding is destination-rooted and installed proactively as
+OpenFlow group tables, with fast-failover (FF) groups for local protection and
+controller-driven reroute for the general case. On a 52-switch campus instance
+we measure 100\% recovery across all tested link- and switch-failure scenarios,
+with median recovery between 80\,ms and 210\,ms; we report the measured values
+and note that software Open vSwitch does not trip FF groups without
+Bidirectional Forwarding Detection (BFD), so recovery is controller-driven.
+An exhaustive offline proof over all 102 single-link and all 5{,}151
+double-link failure combinations (25{,}755 traffic cases) finds zero routing
+loops or black-holes while a path exists. A comparison of eight candidate
+topologies shows that the proposed hybrid dual-plane design is the lowest-cost
+architecture that still survives every single and double failure. Controller
+overhead is modest (5.8\% average CPU, 65\,MB resident memory). We additionally
+remove the single point of failure with a lightweight dual-controller heartbeat
+scheme, and extend the fabric with multi-chassis link aggregation (MLAG), a
+data-centre tier, application-aware classification, and hardware priority
+queues.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Software-Defined Networking, OpenFlow, fast failover, network resilience, load
+balancing, Quality of Service, campus networks, controller high availability.
+\end{IEEEkeywords}
+
+%==============================================================================
+\section{Introduction}
+%==============================================================================
+Enterprise and campus networks are expected to be always on, yet the control
+mechanisms they rely on were not designed together. At layer~2, the Rapid
+Spanning Tree Protocol (RSTP) guarantees a loop-free topology by \emph{blocking}
+redundant links, so roughly half of the installed capacity is idle and
+reconvergence after a failure is visible to applications. At layer~3,
+link-state protocols such as OSPF and IS-IS reconverge in hundreds of
+milliseconds to seconds unless aggressively tuned, and inter-domain BGP is
+slower still. Each of these protocols solves one problem---loop freedom,
+shortest-path routing, or multipath---in isolation, and none of them was
+conceived with a global, programmable view of the network.
+
+Software-Defined Networking (SDN) changes the premise: the control logic is
+removed from the switches and centralized in a controller that programs the
+forwarding plane over a southbound protocol, here OpenFlow~1.3. This paper asks
+a focused question: \emph{if the control plane already has a global view, can
+failover, load balancing, and QoS be expressed as one mechanism rather than
+three?} We answer in the affirmative with \textbf{first-hop plane selection}:
+the fabric is partitioned into two node-disjoint planes, and every flow's
+behaviour---surviving a failure, spreading load, or receiving priority---reduces
+to the choice of plane made at its first hop.
+
+The contributions of this paper are:
+\begin{itemize}
+  \item A unifying control abstraction (first-hop plane selection) that
+  expresses failover, equal- and weighted-cost load balancing, and QoS
+  plane-pinning as a single first-hop decision (Section~\ref{sec:control}).
+  \item A hybrid three-tier dual-plane topology that is co-designed with the
+  control logic so that backup paths are node-disjoint from primaries, together
+  with a quantitative comparison against seven alternative architectures
+  (Sections~\ref{sec:arch} and \ref{sec:topo}).
+  \item An honest, reproducible evaluation on a 52-switch instance with
+  per-scenario recovery statistics, an RSTP baseline, and controller overhead
+  (Section~\ref{sec:results}).
+  \item An exhaustive offline correctness proof that distinguishes genuine
+  physical partition from routing bugs over every single and double link
+  failure (Section~\ref{sec:results}).
+  \item Removal of the controller single point of failure via a lightweight
+  dual-controller heartbeat scheme, and feature extensions (MLAG, a data-centre
+  tier, application-aware classification, and hardware priority queues) that
+  keep the verified base unchanged (Sections~\ref{sec:control}
+  and~\ref{sec:impl}).
+\end{itemize}
+
+%==============================================================================
+\section{Related Work}\label{sec:related}
+%==============================================================================
+\textbf{Fast failover in OpenFlow.} Sharma \emph{et al.}~\cite{sharma} showed
+that OpenFlow can approach carrier-grade (sub-50\,ms) recovery when fast-failover
+group tables are combined with hardware link-liveness detection such as BFD,
+and that purely controller-driven restoration is slower. More recent work
+continues this line: FAPR~\cite{fapr} combines protection via FF group tables
+with adaptive recomputation to reduce interruption, and hybrid
+protection/restoration schemes with per-link BFD~\cite{ijaip} trade response
+time against rule count. A 2024 survey~\cite{survey_lf} taxonomizes link-failure
+detection and recovery, confirming that FF groups let a switch fail over
+autonomously but only when link liveness is signalled. Our work differs by
+making the protected backup \emph{node-disjoint by construction} and by
+reporting measured software-datapath behaviour honestly rather than asserting a
+sub-50\,ms figure the datapath cannot deliver without BFD.
+
+\textbf{Resilience and routing surveys.} Isyaku \emph{et
+al.}~\cite{isyaku} survey dynamic routing and failure-recovery approaches for
+efficient resource utilization in OpenFlow-SDN, and a comprehensive treatment of
+fault tolerance and failure recovery~\cite{menaceur} covers both data- and
+control-plane domains. These works motivate---but do not implement---an
+integrated mechanism; we provide a running system and an exhaustive correctness
+proof.
+
+\textbf{Load balancing and QoS.} Weighted and safe multipath schemes improve on
+plain ECMP: a constrained formulation that respects link-capacity limits while
+optimizing delay~\cite{safelb} and learning-based approaches using deep
+reinforcement learning~\cite{transformer} both report gains over ECMP. We do
+not pursue a learning controller; instead we show that the same plane-selection
+primitive that provides failover also provides equal/weighted multipath and
+DiffServ-style QoS, with deterministic, verifiable behaviour.
+
+\textbf{Controller high availability.} Distributed and clustered controller
+designs remove the single point of failure using consensus (e.g.,
+Raft/Akka)~\cite{ha2024}. For a campus-scale deployment we adopt a lighter
+heartbeat-based promotion scheme that is demonstrable by terminating the primary
+process, and that is coupled to data-plane reinstallation.
+
+%==============================================================================
+\section{System Architecture}\label{sec:arch}
+%==============================================================================
+\subsection{Hybrid three-tier dual-plane fabric}
+The fabric is a three-tier campus network (core, distribution, access)
+partitioned into two \emph{planes}, A and B. The core switches are split into
+two groups that form the roots of the two planes; each pod contains one
+distribution switch per plane; and every access switch is \emph{dual-homed},
+with one uplink into each plane. The two planes share no distribution or access
+switch and no inter-switch link, so they are node-disjoint: any single failure
+affects at most one plane, and the other plane remains a complete path from
+every access switch to every core.
+
+The design is parametric in the number of pods $P$, access switches per pod
+$A$, hosts per access switch $H$, and cores $C$ (with $C$ even so the two
+planes are equal). The switch count is
+\[
+N_{sw} = C + 2P + PA \;(+\,1\ \text{for the optional data-centre switch}),
+\]
+and the number of inter-switch links (ISLs) is
+\[
+N_{isl} = \binom{C}{2} + 2\cdot 2P + 2\cdot PA \;(+\,P_{\text{MLAG}} + 2_{\text{DC}}),
+\]
+comprising the core full mesh, two core uplinks per distribution switch, two
+plane uplinks per access switch, and the optional MLAG peer links and
+data-centre uplinks. Port counts follow directly: a core switch uses
+$(C{-}1)+P$ ports, a distribution switch uses $2+A+1_{\text{MLAG}}$ ports, and
+an access switch uses $2+H$ ports.
+
+\subsection{Evaluated and deployment instances}
+The instance used throughout the evaluation sets $P{=}6$, $A{=}6$, $C{=}4$,
+giving 52 switches (4 core, 12 distribution, 36 access) and 102 inter-switch
+links (Table~\ref{tab:scale}). For deployment we additionally verified a
+realistic-density instance ($P{=}8$, $A{=}4$, $H{=}46$, $C{=}4$: 52 switches,
+$\approx$1{,}470 hosts at 48-port access density) and a full-feature superset
+(MLAG, data-centre tier, application-aware classification, and hardware queues)
+on a commodity laptop (Intel~i7, 16\,GB RAM).
+
+\begin{table}[t]
+\caption{Evaluated campus instance ($P{=}6, A{=}6, C{=}4$).}
+\label{tab:scale}
+\centering
+\begin{tabular}{@{}lrl@{}}
+\toprule
+Quantity & Value & Note \\
+\midrule
+Core switches        & 4   & split into two planes (2 + 2) \\
+Distribution switches& 12  & one per plane, per pod \\
+Access switches      & 36  & dual-homed to both planes \\
+Total switches       & 52  & \\
+Inter-switch links   & 102 & 6 mesh + 24 dist--core + 72 access--dist \\
+Core ports/switch    & 9   & $(C{-}1)+P$ \\
+Dist.\ ports/switch  & 8   & $2+A$ (uplinks + downlinks) \\
+Access ports/switch  & $2{+}H$ & 2 plane uplinks + $H$ host ports \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%==============================================================================
+\section{Control-Plane Design}\label{sec:control}
+%==============================================================================
+\subsection{First-hop plane selection}
+The central abstraction is that the first switch a flow traverses selects the
+plane for that flow. Because the two planes are node-disjoint, this single
+choice realizes three behaviours:
+\begin{itemize}
+  \item \emph{Failover}: if the chosen plane is unavailable toward the
+  destination, the first hop selects the other plane.
+  \item \emph{Load balancing}: when both planes are healthy, flows are spread
+  across A and B (equal-cost, or weighted toward the less-loaded plane).
+  \item \emph{QoS}: priority (Expedited Forwarding, EF) flows are pinned to the
+  currently least-loaded plane.
+\end{itemize}
+
+\subsection{Destination-rooted forwarding and group tables}
+Forwarding is destination-rooted: for each destination access (or data-centre)
+switch, the controller computes a forwarding tree and installs it as OpenFlow
+groups on every switch. This yields $O(N)$ installation cost in the number of
+destinations rather than $O(N^2)$ host-pair state, and allows all forwarding to
+be installed \emph{proactively} at start-up without first generating traffic.
+Local protection uses OpenFlow fast-failover groups (\texttt{OFPGT\_FF}) whose
+watch ports select a live bucket; the general reroute recomputes the
+destination tree in the controller and reinstalls affected groups. Multipath
+uses select groups (\texttt{OFPGT\_SELECT}) for equal-cost balancing and
+inverse-load bucket weights (WCMP) when the planes are unequal.
+
+\subsection{QoS and application awareness}
+QoS uses DiffServ: EF traffic (DSCP~46) is matched and steered by a high-priority
+flow entry to the least-loaded plane, and is re-pinned on congestion or failure.
+Application-aware classification matches a small set of layer-4 signatures
+(e.g., voice/RTP, SIP, HTTPS, HTTP, FTP) and maps each class to a hardware
+priority queue. On Open vSwitch these are linux-htb queues (high/medium/low)
+installed per port, with the forwarding action issuing \texttt{Set-Queue}.
+
+\subsection{Controller high availability}
+To remove the controller single point of failure, two controller instances run
+the same application; every switch is connected to both. The backup is passive,
+heartbeats the primary's REST endpoint, and on a configured number of missed
+beats promotes itself---deleting stale groups and reinstalling every destination
+tree---then relinquishes control when the primary returns. The scheme is
+intentionally lightweight (no external consensus service) and is demonstrable by
+terminating the primary process.
+
+%==============================================================================
+\section{Implementation}\label{sec:impl}
+%==============================================================================
+The data plane is emulated in Mininet with Open vSwitch; the control plane is a
+Ryu application speaking OpenFlow~1.3. Topology discovery uses LLDP via Ryu's
+link-observation feature. There is no distributed routing protocol: path
+computation and all forwarding state are centralized. A single source-of-truth
+model generates the topology, the Mininet build, and the controller's view, so
+the controller's model and the live datapath cannot diverge. Optional features
+(MLAG peer links, data-centre tier, application classification, hardware queues,
+high availability) are gated behind configuration flags so that the verified
+base topology and forwarding are unchanged when they are disabled. A browser-based
+operations dashboard renders live controller state (switches, links, hosts,
+per-plane load, and events) directly from the controller's REST API.
+Table~\ref{tab:compare} summarizes the mapping from traditional network
+functions to the mechanisms used here.
+
+\begin{table}[t]
+\caption{Control-plane mapping: traditional vs.\ proposed system.}
+\label{tab:compare}
+\centering
+\footnotesize
+\begin{tabular}{@{}p{1.7cm}p{2.5cm}p{2.8cm}@{}}
+\toprule
+Function & Traditional & This system \\
+\midrule
+Routing decision & BGP/OSPF/IS-IS (distributed) & Centralized controller; destination-rooted forwarding (no routing protocol) \\
+Controller--switch & --- & OpenFlow 1.3 (southbound) \\
+Topology discovery & OSPF/IS-IS hellos, STP BPDUs & LLDP (link observation) \\
+Loop-free forwarding & RSTP (blocks $\sim$50\% links) & OpenFlow group tables (no links blocked) \\
+Fast failover & RSTP / IP-FRR & FF groups (\texttt{OFPGT\_FF}) + controller reroute \\
+Load balancing & ECMP in OSPF/BGP & Select groups (ECMP) / WCMP \\
+QoS & DiffServ + MPLS & DSCP/DiffServ (EF~46) + HTB queues \\
+Failure detection & BFD & BFD (optional) + controller link-state \\
+Control transport & --- & TCP (OpenFlow channel) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%==============================================================================
+\section{Evaluation Methodology}\label{sec:method}
+%==============================================================================
+We evaluate on the 52-switch instance of Table~\ref{tab:scale}. Five failure
+scenarios plus a no-failure baseline are each repeated for 20 trials (103 trials
+total, including baseline), measuring for each trial: \emph{detection} (time to
+observe the failure), \emph{reroute} (time to install the backup),
+\emph{outage} (the one-way packet-loss gap), packets lost, and whether traffic
+fully recovered. The scenarios are: an access-uplink failure, a
+distribution--core failure, and a core--distribution failure (all protected by
+local FF groups); a last-hop failure and a whole-switch isolation (both handled
+by controller reroute). Traffic for each trial is a constant-rate probe: a
+250\,pkt/s ICMP stream (\texttt{ping -i 0.004}, 1500 packets) for the loss-gap
+measurement, and a 500\,pkt/s UDP probe for the one-way forward outage. The
+outage is the contiguous loss interval, and a trial counts as recovered when
+that outage falls below $0.8\times$ the injected fault window. Reroute time is
+derived from OpenFlow group bucket \texttt{packet\_count} transitions---the
+primary bucket freezing while the backup bucket climbs---read from
+group-statistics dumps, so it reflects the datapath rather than a controller log
+timestamp. Controller CPU and resident memory are sampled throughout. As a
+traditional baseline we measure RSTP recovery on the same emulated datapath.
+Finally, an offline proof exhaustively evaluates the exact
+destination-tree planning and datapath walk the controller installs, over every
+single- and double-link failure.
+
+%==============================================================================
+\section{Results}\label{sec:results}
+%==============================================================================
+\subsection{Recovery performance}
+Table~\ref{tab:recovery} reports per-scenario statistics. All scenarios recover
+in 100\% of trials. Locally protected link failures show median outage of
+80--140\,ms; controller-driven cases (last-hop and switch isolation) show
+120\,ms and 210\,ms median outage respectively. Median packet loss ranges from
+4 to 10 packets at the probe rate used.
+
+\begin{table}[t]
+\caption{Measured recovery (20 trials/scenario; median, p95).}
+\label{tab:recovery}
+\centering
+\footnotesize
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Scenario & Mech. & Outage (ms) & Reroute (ms) & Rec. \\
+\midrule
+Access-uplink      & local FF   & 140 (p95 141) & 47.7 & 100\% \\
+Dist.--core        & local FF   & 80 (p95 101)  & 68.4 & 100\% \\
+Core--dist.        & local FF   & 80 (p95 101)  & 58.3 & 100\% \\
+Last-hop           & ctrl.\ reroute & 120 (p95 141) & 58.3 & 100\% \\
+Switch isolation   & ctrl.\ reroute & 210 (p95 281) & 237.7 & 100\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Comparison with traditional recovery}
+Table~\ref{tab:vs} places the measured results alongside an RSTP measurement on
+the same datapath and representative figures from the literature. We are
+deliberate about interpretation. On this software datapath, RSTP's local
+reconvergence was fast ($\approx$20\,ms); our measured recovery is
+controller-driven (80--210\,ms) because software Open vSwitch does not switch FF
+buckets on a link-down event without BFD on the watch port (we verified via
+group statistics that the primary bucket remains selected and the backup idle).
+The FF groups are nevertheless installed, destination-rooted, and
+hardware-ready, and would provide sub-50\,ms local protection on hardware with
+BFD, consistent with~\cite{sharma}. The decisive advantages over RSTP are
+therefore \emph{architectural}, not raw milliseconds: RSTP blocks
+$\approx$50\% of links whereas the proposed fabric forwards on all links over
+node-disjoint primary/backup paths, and it provides multipath load balancing and
+programmable QoS that RSTP cannot. Against L3 routing convergence (OSPF, IS-IS,
+BGP), the measured 80--210\,ms is competitive without requiring MPLS hardware.
+
+\begin{table}[t]
+% VERIFY: the rows marked "literature/indicative" below are representative
+% convergence figures from standard routing references. Cite each one
+% individually (replace the \cite placeholder) or state them as indicative.
+\caption{Recovery time: measured results vs.\ indicative literature figures.}
+\label{tab:vs}
+\centering
+\footnotesize
+\begin{tabular}{@{}lrl@{}}
+\toprule
+System & Recovery & Source \\
+\midrule
+This work --- link recovery   & $\approx$80\,ms  & measured \\
+This work --- switch recovery & $\approx$210\,ms & measured \\
+RSTP datapath (this testbed)  & $\approx$20\,ms  & measured \\
+MPLS / IP-FRR (LFA)           & $\approx$50\,ms  & literature \\
+OSPF + BFD, tuned             & $\approx$150\,ms & literature \\
+IS-IS, tuned                  & $\approx$300\,ms & literature \\
+RSTP (L2, typical)            & $\approx$1.5\,s  & literature \\
+OSPF, default timers          & $\approx$3\,s    & literature \\
+BGP, inter-domain             & $\approx$30\,s   & literature \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Controller overhead}
+Across the evaluation the controller used 5.8\% average CPU (89.9\% momentary
+peak during reroute bursts), 64.2\,MB average and 65.0\,MB peak resident memory,
+and installed 2{,}238 flow entries in total ($\approx$43 per access switch). The
+overhead is small enough to run the full control plane alongside the emulated
+data plane on a single commodity laptop.
+
+\subsection{Exhaustive multi-failure correctness}
+The live experiments fail one element at a time. To bound correctness under
+simultaneous failures, we exhaustively evaluate the controller's
+destination-tree planning and datapath walk offline over the 52-switch instance
+(102 inter-switch links). For each failure set and representative source/
+destination pairs we classify the outcome as \emph{recovered},
+\emph{partition} (no path physically exists---unavoidable), or \emph{bug}
+(loop or black-hole while a path still exists). Table~\ref{tab:proof} reports the
+results: zero bugs and zero loops across all 510 single-failure and all 25{,}755
+double-failure cases, with non-recoveries only where the graph is genuinely
+partitioned. The same proof passes on the full-feature superset instance.
+
+\begin{table}[t]
+\caption{Offline multi-failure proof (5 traffic pairs per failure set).}
+\label{tab:proof}
+\centering
+\footnotesize
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Failure set & Cases & Recovered & Partition & Bugs/Loops \\
+\midrule
+All single-link & 510    & 510    & 0  & 0 \\
+All double-link & 25{,}755 & 25{,}745 & 10 & 0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Topology comparison}
+To justify the dual-plane design we scored eight candidate architectures over
+the same campus using a graph model (hop count as a latency proxy, link cost,
+average node-disjoint paths and edge connectivity as redundancy, and
+Monte-Carlo survival under $k$ random link failures). The survival column is
+thus a probabilistic estimate over random link sets, distinct from the
+exhaustive guarantee of Table~\ref{tab:proof}. Table~\ref{tab:topo} reports
+five representative architectures. The proposed hybrid dual-plane design is the
+lowest-cost topology that still survives every single and double failure: a
+single-homed tree or a distribution ring are cheaper but drop 8--10\% of traffic
+under a double failure, while spine-leaf and full mesh match our survival but at
+1.8$\times$ and 2.7$\times$ the link cost and with far higher port fan-out.
+
+\begin{table}[t]
+\caption{Topology comparison (same campus; selected architectures).}
+\label{tab:topo}
+\centering
+\footnotesize
+\begin{tabular}{@{}lrrrrr@{}}
+\toprule
+Topology & Links & Cost & Hops & Disj.\ paths & 2-fail surv. \\
+\midrule
+Hybrid dual-plane (ours) & 102 & 234 & 3.71 & 2.0 & 100\% \\
+3-tier single-homed      & 49  & 111 & 3.71 & 1.0 & 92\% \\
+Distribution ring        & 42  & 84  & 3.54 & 1.0 & 90\% \\
+Spine-leaf (Clos)        & 144 & 432 & 2.00 & 4.0 & 100\% \\
+Full mesh (reference)    & 630 & 630 & 1.00 & 35  & 100\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%==============================================================================
+\section{Discussion}\label{sec:discuss}
+%==============================================================================
+Three points deserve emphasis. First, many SDN studies claim sub-50\,ms recovery
+that a software datapath cannot deliver without BFD; we instead report the
+measured controller-driven figure and its exact cause, which we confirmed from
+OpenFlow group statistics (the primary bucket stays selected and the backup
+stays idle on a software link-down). Second, the dual-plane topology is not
+decoration: node-disjoint planes are what make a backup path independent of its
+primary and what make plane-selection load balancing and QoS well defined, and
+the choice is justified quantitatively in Table~\ref{tab:topo} rather than
+asserted. Third, unifying failover, load balancing, and QoS under one first-hop
+decision reduces control-plane complexity---the same group installed for
+protection also carries the multipath and QoS policy.
+
+%==============================================================================
+\section{Novelty and Contributions}\label{sec:novelty}
+%==============================================================================
+The novelty of this work is the \emph{unification}: failover, equal/weighted
+load balancing, and QoS are expressed as one first-hop plane-selection decision
+rather than three mechanisms, on a topology deliberately co-designed so that the
+abstraction is provably sound (node-disjoint planes). Alongside this we
+contribute: a complete, running OpenFlow~1.3 campus system (controller, emulated
+datapath, and live operations dashboard); removal of the controller single point
+of failure via a practical heartbeat scheme coupled to data-plane
+reinstallation; an exhaustive correctness proof that separates genuine partition
+from routing bugs; a quantitative topology study that grounds the architecture
+choice; and a reproducible evaluation harness (recovery suite, RSTP baseline,
+topology study, and multi-failure prover). We report measured recovery rather
+than an unattainable sub-50\,ms claim.
+
+%==============================================================================
+\section{Limitations and Future Work}\label{sec:future}
+%==============================================================================
+The evaluation uses an emulated datapath (Mininet/Open vSwitch); absolute
+timings on hardware will differ, and true sub-50\,ms local protection requires
+BFD and hardware FF support, which the groups are already structured for.
+Forwarding is currently destination-rooted at layer~2 (MAC-prefix); full L3
+inter-subnet routing is future work. Throughput under sustained congestion was
+exercised qualitatively via the load-balancing and QoS demonstrations but is not
+reported as a persisted benchmark here. Finally, the heartbeat HA scheme targets
+campus scale; consensus-based multi-controller clustering would suit larger
+deployments. Planned work includes a hardware/BFD testbed, an L3 routing mode, a
+sustained-throughput benchmark, and a comparison of the deterministic WCMP
+plane-selection against a reinforcement-learning balancer.
+
+%==============================================================================
+\section{Conclusion}\label{sec:conclusion}
+%==============================================================================
+We presented a campus SDN fabric in which failover, load balancing, and QoS are
+a single first-hop plane-selection decision over two node-disjoint planes,
+implemented on OpenFlow~1.3 with destination-rooted group tables. The system
+recovers from every tested link and switch failure (100\%), with honest
+controller-driven recovery of 80--210\,ms and small controller overhead, and is
+provably free of routing loops and black-holes across all single and double link
+failures. A topology study confirms the design is the lowest-cost architecture
+that survives all single and double failures, and a lightweight dual-controller
+scheme removes the control-plane single point of failure. The result is a
+coherent, reproducible system that unifies three traditionally separate network
+functions under one mechanism.
+
+%==============================================================================
+% VERIFY: refs [3] menaceur, [4] fapr, [6] survey_lf, [8] safelb, [9] ha2024
+% (and the author lists of [5] ijaip, [7] transformer) are INCOMPLETE — they
+% need full author names, volume/issue, and pages or DOI. Open each original
+% source and fill these in; do NOT submit with placeholders. Do not invent
+% fields. Also confirm every in-text \cite{} points at the intended work.
+\begin{thebibliography}{00}
+\bibitem{sharma} S.~Sharma, D.~Staessens, D.~Colle, M.~Pickavet, and P.~Demeester,
+``OpenFlow: Meeting carrier-grade recovery requirements,'' \emph{Computer
+Communications}, vol.~36, no.~6, pp.~656--665, 2013.
+\bibitem{isyaku} B.~Isyaku \emph{et al.}, ``Dynamic Routing and Failure Recovery
+Approaches for Efficient Resource Utilization in OpenFlow-SDN: A Survey,''
+\emph{IEEE Access}, vol.~10, 2022.
+\bibitem{menaceur} ``Fault Tolerance and Failure Recovery Techniques in
+Software-Defined Networking: A Comprehensive Approach,'' \emph{Journal of
+Network and Systems Management}, 2023.
+\bibitem{fapr} ``FAPR: An Adaptive Approach to Link Failure Recovery in SDN with
+High Speed and Low Interruption Rate,'' \emph{Applied Sciences (MDPI)}, 2024.
+\bibitem{ijaip} ``OpenFlow groups based fast failover mechanism for
+software-defined networks,'' \emph{Int.\ J.\ of Advanced Intelligence
+Paradigms}, vol.~28, 2024.
+\bibitem{survey_lf} ``A Survey of Link Failure Detection and Recovery in
+Software-Defined Networks,'' \emph{Computer Systems Science and Engineering},
+2024.
+\bibitem{safelb} ``Safe Load Balancing in Software-Defined Networking,'' in
+\emph{Proc.\ IEEE/IFIP NOMS}, 2024.
+\bibitem{transformer} ``A Transformer-based Deep Q-Learning Approach for Dynamic
+Load Balancing in Software-Defined Networks,'' preprint, 2024.
+\bibitem{ha2024} ``Fault-tolerant distributed SDN control plane,'' \emph{Computer
+Networks (Elsevier)}, vol.~241, 2024.
+\bibitem{openflow} Open Networking Foundation, ``OpenFlow Switch Specification,
+Version 1.3,'' 2012.
+\bibitem{mininet} B.~Lantz, B.~Heller, and N.~McKeown, ``A network in a laptop:
+Rapid prototyping for software-defined networks,'' in \emph{Proc.\ ACM HotNets},
+2010.
+\bibitem{ovs} B.~Pfaff \emph{et al.}, ``The design and implementation of Open
+vSwitch,'' in \emph{Proc.\ USENIX NSDI}, 2015.
+\bibitem{ryu} Ryu SDN Framework Community, ``Ryu: Component-based software-defined
+networking framework,'' \url{https://ryu-sdn.org}.
+\bibitem{wcmp} J.~Zhou \emph{et al.}, ``WCMP: Weighted cost multipathing for
+improved fairness in data centers,'' in \emph{Proc.\ ACM EuroSys}, 2014.
+\bibitem{diffserv} K.~Nichols, S.~Blake, F.~Baker, and D.~Black, ``Definition of
+the Differentiated Services Field (DS Field) in the IPv4 and IPv6 Headers,'' RFC
+2474, 1998.
+\bibitem{bfd} D.~Katz and D.~Ward, ``Bidirectional Forwarding Detection (BFD),''
+RFC 5880, 2010.
+\end{thebibliography}
+
+\end{document}
