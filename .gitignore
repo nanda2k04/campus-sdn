@@ -22,3 +22,8 @@ paper/campus_sdn.pdf
 
 # OS / editor
 .DS_Store
+
+# Claude Code tooling (not project code)
+.claude/
+skills-lock.json
+topology.json
