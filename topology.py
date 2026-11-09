@@ -402,7 +402,7 @@ def main():
     ap.add_argument("--test",
                     choices=["cli", "dump", "conn", "pingall", "discover",
                              "failover", "reroute", "experiments", "eval",
-                             "scale", "proof", "demo", "congest", "none"],
+                             "scale", "proof", "demo", "congest", "bench", "none"],
                     default="cli",
                     help="cli=interactive; dump=build+print+stop; "
                          "conn=representative connectivity pings; "
@@ -458,6 +458,11 @@ def main():
                 time.sleep(8)
                 import congest_scenario
                 congest_scenario.run_congest(net, topo)
+        elif args.test == "bench":
+            if net.waitConnected(timeout=40):
+                time.sleep(8)
+                import failover_bench
+                failover_bench.run_bench(net, topo)
         elif args.test == "proof":
             if net.waitConnected(timeout=40):
                 time.sleep(8)
